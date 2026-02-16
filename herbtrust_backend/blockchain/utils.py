@@ -11,13 +11,7 @@ def create_genesis_block():
         genesis = Block(
             index=0,
             block_type="GENESIS",
-            farmer_id=None,
-            manufacturer_id=None,
-            auditor_id=None,
             batch_id="GENESIS",
-            herb="GENESIS",
-            quantity=0,
-            location="GENESIS",
             previous_hash="0"
         )
 
@@ -27,26 +21,63 @@ def create_genesis_block():
 
 
 # -----------------------------------
-# 2️⃣ Add New Block
+# 2️⃣ Add New Block (Dynamic by block_type)
 # -----------------------------------
-def add_block(farmer_id, batch_id, herb, quantity, location):
+# def add_block(data):
 
-    # 🔒 Prevent duplicate batch submission
-    if Block.objects.filter(batch_id=batch_id).exists():
-        raise Exception("Batch already exists in blockchain")
+#     last_block = Block.objects.order_by("index").last()
+
+#     new_block = Block(
+#         index=last_block.index + 1,
+#         block_type=data.get("block_type"),
+#         batch_id=data.get("batch_id"),
+#         previous_hash=last_block.hash,
+
+#         # Farmer
+#         farmer_id=data.get("farmer_id"),
+#         herb=data.get("herb"),
+#         quantity=data.get("quantity"),
+#         location=data.get("location"),
+
+#         # Manufacturer
+#         manufacturer_id=data.get("manufacturer_id"),
+#         processing_details=data.get("processing_details"),
+
+#         # Auditor
+#         auditor_id=data.get("auditor_id"),
+#         remarks=data.get("remarks"),
+#     )
+
+#     new_block.save()
+#     new_block.hash = new_block.calculate_hash()
+#     new_block.save()
+
+#     return new_block
+
+
+def add_block(**data):
 
     last_block = Block.objects.order_by("index").last()
 
+    block_type = data.get("block_type")
+    batch_id = data.get("batch_id")
+
+    # 🚫 Prevent duplicate block type for same batch
+    if Block.objects.filter(batch_id=batch_id, block_type=block_type).exists():
+        raise Exception(f"{block_type} block already exists for this batch")
+
     new_block = Block(
         index=last_block.index + 1,
-        block_type="FARMER",   # you can change dynamically later
-        farmer_id=farmer_id,
-        manufacturer_id=None,
-        auditor_id=None,
+        block_type=block_type,
         batch_id=batch_id,
-        herb=herb,
-        quantity=quantity,
-        location=location,
+        farmer_id=data.get("farmer_id"),
+        herb=data.get("herb"),
+        quantity=data.get("quantity"),
+        location=data.get("location"),
+        manufacturer_id=data.get("manufacturer_id"),
+        processing_details=data.get("processing_details"),
+        auditor_id=data.get("auditor_id"),
+        remarks=data.get("remarks"),
         previous_hash=last_block.hash
     )
 
@@ -64,26 +95,17 @@ def is_chain_valid():
 
     blocks = list(Block.objects.all().order_by("index"))
 
-    # 1️⃣ Check Genesis Exists
-    if not blocks:
-        return False
-
-    if blocks[0].index != 0:
-        return False
-
     for i in range(1, len(blocks)):
 
         current = blocks[i]
         previous = blocks[i - 1]
 
-        # 🔗 Check hash linkage
+        # Check hash link
         if current.previous_hash != previous.hash:
-            print("Previous hash mismatch at block", current.index)
             return False
 
-        # 🔐 Recalculate hash and compare
+        # Recalculate and check
         if current.hash != current.calculate_hash():
-            print("Hash mismatch at block", current.index)
             return False
 
     return True

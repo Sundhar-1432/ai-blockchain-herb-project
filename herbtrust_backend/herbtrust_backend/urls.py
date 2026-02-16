@@ -28,6 +28,8 @@ urlpatterns = [
     # path('api/login/', TokenObtainPairView.as_view()),
     # path('api/refresh/', TokenRefreshView.as_view()),
     path('blockchain/', include('blockchain.urls')),
+    # path('blockchain/', include('blockchain.urls')),
+
 
     re_path(r'^.*$', ReactAppView.as_view()),
 ]

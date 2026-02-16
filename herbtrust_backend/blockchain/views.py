@@ -1,25 +1,31 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from .models import Block
 from .utils import add_block, create_genesis_block, is_chain_valid
 
+
+# class AddBlockView(APIView):
+
+#     def post(self, request):
+
+#         create_genesis_block()
+
+#         block = add_block(request.data)
+
+#         return Response({
+#             "message": "Block added successfully",
+#             "index": block.index,
+#             "hash": block.hash
+#         })
 
 class AddBlockView(APIView):
 
     def post(self, request):
 
-        try:
-            # Ensure genesis block exists
-            create_genesis_block()
+        create_genesis_block()
 
-            block = add_block(
-                farmer_id=request.data["farmer_id"],
-                batch_id=request.data["batch_id"],
-                herb=request.data["herb"],
-                quantity=request.data["quantity"],
-                location=request.data["location"]
-            )
+        try:
+            block = add_block(**request.data)
 
             return Response({
                 "message": "Block added successfully",
@@ -27,11 +33,9 @@ class AddBlockView(APIView):
             })
 
         except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
+            return Response({
+                "error": str(e)
+            }, status=400)
 
 class GetChainView(APIView):
 
@@ -45,16 +49,18 @@ class GetChainView(APIView):
             data.append({
                 "index": block.index,
                 "timestamp": block.timestamp,
-                # "block_type": block.block_type,
-                "farmer_id": block.farmer_id,
-                # "manufacturer_id": block.manufacturer_id,
-                # "auditor_id": block.auditor_id,
+                "block_type": block.block_type,
                 "batch_id": block.batch_id,
+                "farmer_id": block.farmer_id,
                 "herb": block.herb,
                 "quantity": block.quantity,
                 "location": block.location,
+                "manufacturer_id": block.manufacturer_id,
+                "processing_details": block.processing_details,
+                "auditor_id": block.auditor_id,
+                "remarks": block.remarks,
                 "previous_hash": block.previous_hash,
-                "hash": block.hash
+                "hash": block.hash,
             })
 
         return Response(data)
@@ -63,6 +69,7 @@ class GetChainView(APIView):
 class ValidateChainView(APIView):
 
     def get(self, request):
+
         return Response({
             "valid": is_chain_valid()
         })
