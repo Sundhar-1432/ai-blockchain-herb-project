@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AyurTrace - Sustainable Farming & Herb Traceability Design System
+   Dark botanical theme with forest greens and gold accents
+*/
+
+@layer base {
+  :root {
+    /* Dark Theme - Primary */
+    --background: 150 20% 4%;
+    --foreground: 80 20% 90%;
+
+    --card: 150 15% 8%;
+    --card-foreground: 80 20% 90%;
+
+    --popover: 150 15% 6%;
+    --popover-foreground: 80 20% 90%;
+
+    /* Forest Green Primary */
+    --primary: 152 45% 35%;
+    --primary-foreground: 80 20% 98%;
+
+    /* Muted Gold Secondary */
+    --secondary: 36 35% 55%;
+    --secondary-foreground: 150 20% 8%;
+
+    /* Muted surfaces */
+    --muted: 150 15% 12%;
+    --muted-foreground: 80 10% 55%;
+
+    /* Leaf Green Accent */
+    --accent: 142 69% 45%;
+    --accent-foreground: 150 20% 4%;
+
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Success Green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+
+    /* Warning Gold */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 4%;
+
+    --border: 150 15% 18%;
+    --input: 150 15% 15%;
+    --ring: 142 69% 45%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens for the app */
+    --glow-green: 142 69% 45%;
+    --gold: 36 50% 60%;
+    --forest-deep: 150 38% 12%;
+    --botanical-pattern: 150 20% 6%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(152 45% 35%), hsl(142 69% 45%));
+    --gradient-gold: linear-gradient(135deg, hsl(36 50% 45%), hsl(36 50% 60%));
+    --gradient-dark: linear-gradient(180deg, hsl(150 20% 4%), hsl(150 15% 8%));
+    --gradient-card: linear-gradient(145deg, hsl(150 15% 10%), hsl(150 15% 7%));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(142 69% 45% / 0.15), transparent 70%);
+    
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(142 69% 45% / 0.2);
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
+    --shadow-elevated: 0 8px 40px hsl(0 0% 0% / 0.5);
+
+    /* Sidebar */
+    --sidebar-background: 150 15% 6%;
+    --sidebar-foreground: 80 20% 85%;
+    --sidebar-primary: 142 69% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 15% 12%;
+    --sidebar-accent-foreground: 80 20% 90%;
+    --sidebar-border: 150 15% 15%;
+    --sidebar-ring: 142 69% 45%;
+  }
+
+  .dark {
+    /* Same as root - dark by default */
+    --background: 150 20% 4%;
+    --foreground: 80 20% 90%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.5);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.7);
+  }
+}
+
+@layer components {
+  /* Glow effects */
+  .glow-green {
+    box-shadow: 0 0 20px hsl(var(--glow-green) / 0.3),
+                0 0 40px hsl(var(--glow-green) / 0.1);
+  }
+
+  .glow-green-sm {
+    box-shadow: 0 0 10px hsl(var(--glow-green) / 0.25);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 20px hsl(var(--gold) / 0.3);
+  }
+
+  /* Card styles */
+  .card-botanical {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-card);
+    border-radius: var(--radius);
+  }
+
+  .card-elevated {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--primary) / 0.2);
+    box-shadow: var(--shadow-elevated), var(--shadow-glow);
+    border-radius: var(--radius);
+  }
+
+  /* Text gradients */
+  .text-gradient-primary {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Background patterns */
+  .bg-botanical-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 50%, hsl(var(--primary) / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--glow-green) / 0.03) 0%, transparent 40%),
+      radial-gradient(circle at 40% 80%, hsl(var(--gold) / 0.02) 0%, transparent 40%);
+  }
+
+  /* Auth background overlay */
+  .auth-overlay {
+    background: linear-gradient(
+      135deg,
+      hsl(150 20% 4% / 0.85),
+      hsl(150 20% 4% / 0.9)
+    );
+  }
+
+  /* Status badges */
+  .badge-approved {
+    @apply bg-success/20 text-success border border-success/30;
+  }
+
+  .badge-pending {
+    @apply bg-warning/20 text-warning border border-warning/30;
+  }
+
+  .badge-blocked {
+    @apply bg-destructive/20 text-destructive border border-destructive/30;
+  }
+
+  /* Animated border */
+  .border-glow {
+    position: relative;
+  }
+
+  .border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-primary);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    opacity: 0.5;
+  }
+
+  /* Progress bar */
+  .progress-glow {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 15px hsl(var(--glow-green) / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 25px hsl(var(--glow-green) / 0.5);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.5s ease-out forwards;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.3s ease-out forwards;
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Transition utilities */
+  .transition-glow {
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+
+  .transition-glow:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+}
