@@ -20,12 +20,14 @@ from django.contrib import admin
 from django.urls import path, re_path, include
 from .views import ReactAppView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('authentication.urls')),
     # path('api/login/', TokenObtainPairView.as_view()),
     # path('api/refresh/', TokenRefreshView.as_view()),
+    path('blockchain/', include('blockchain.urls')),
 
     re_path(r'^.*$', ReactAppView.as_view()),
 ]
